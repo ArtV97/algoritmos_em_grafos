@@ -25,6 +25,7 @@ int read_file(char *filename, char **v, char **e) {
             *e = strdup(p);
         }
     }
+    fclose(f);
     return 0;
 }
 

@@ -2,23 +2,15 @@
 #include "util.h"
 
 
-int is_conexo_matrix(int **matrix, int n, char *v) {
-    char *s = strdup(v);
-    char *tok = strtok(s, ",");
-    int *neighbours;
+int is_conexo_matrix(int **matrix, int n) {
+    int visited[n];
+    for (int i = 0; i < n; i++) visited[i] = 0;
 
-    while (tok != NULL) {
-        neighbours = neighbours_of(matrix, n, v, tok[0]);
-        fprintf(stderr, "%c = ", tok[0]);
-        for (int i = 0; i < n; i++) {
-            fprintf(stderr, "%d ", neighbours[i]);
+    for (int src = 0; src < n; src++) {
+        for (int dst = src+1; dst < n; dst++) {
+            if (!has_path(matrix, n, src, dst, visited)) return 0;
         }
-        fprintf(stderr, "\n");
-        free(neighbours);
-
-        tok = strtok(NULL, ",");
     }
-    free(s);
     return 1;
 }
 
@@ -52,10 +44,13 @@ int main(int argc, char *argv[]) {
     }
     
     printf("\n\n");
-    if (is_conexo_matrix(matrix, n, v)) printf("Eh conexo!\n");
+    
+    if (is_conexo_matrix(matrix, n)) printf("Eh conexo!\n");
     else printf("Nao eh conexo!\n");
 
     free(v);
     free(e);
+    for (int i = 0; i < n; i++) free(matrix[i]);
+    free(matrix);
     return 0;
 }

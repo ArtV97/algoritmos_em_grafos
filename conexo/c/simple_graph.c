@@ -68,7 +68,7 @@ int **generate_matrix(int n, int m, char *v, char *e) {
     return matrix;
 }
 
-int *neighbours_of(int **matrix, int n, char *v, char c) {
+int *neighbours_of0(int **matrix, int n, char *v, char c) {
     int index = vertex_index(v, c);
     int *neighbours = (int *)calloc(n, sizeof(int));
     //int count = 0;
@@ -91,6 +91,47 @@ int *neighbours_of(int **matrix, int n, char *v, char c) {
     return neighbours;
 }
 
+int *neighbours_of(int **matrix, int n, int index) {
+    int *neighbours = (int *)calloc(n, sizeof(int));
+
+    // check index as row
+    for (int j = 0; j <= index; j++) {
+        if (matrix[index][j]) {
+            neighbours[j] = 1;
+        }
+    }
+
+    // check index as column
+    for (int i = index; i < n; i++) {
+        if (matrix[i][index]) {
+            neighbours[i] = 1;
+        }
+    }
+    return neighbours;
+}
+
+int has_path(int **matrix, int n, int src, int dst, int *visited) {
+    visited[src] = 1;
+    
+    // search in everyone that is conected with src
+    int *neighbours = neighbours_of(matrix, n, src);
+    if (neighbours[dst]){ // src and dst are neighbours 
+        free(neighbours);
+        return 1;
+    }
+    else {
+        for (int i = 0; i < n; i++) {
+            if (visited[i]) continue; // vertex already visited
+            if (neighbours[i] && has_path(matrix, n, i, dst, visited)){
+                free(neighbours);
+                return 1;
+            }
+        }
+    }
+
+    free(neighbours);
+    return 0;
+}
 
 L* init_list(int n, int m) {
     L *l;
