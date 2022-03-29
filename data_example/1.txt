@@ -1,0 +1,7 @@
+# Conexo
+v:a,b,c,d,e
+e:ab,ac,bc,bd,ce,de
+
+# Desconexo
+#v:a,b,c,d,e,f,g,h,i
+#e:ab,ac,bc,bd,ce,de,fh,gh,gi,hi
