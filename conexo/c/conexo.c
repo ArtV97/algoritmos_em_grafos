@@ -32,25 +32,18 @@ int main(int argc, char *argv[]) {
     int n;
     calc_m_n(v, e, &m, &n);
 
-    printf("v: %s, e: %s\n", v, e);
+    printf("v: %s\ne: %s\n", v, e);
 
     int **matrix = generate_matrix(n, m, v, e);
     
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j <= i; j++) {
-            fprintf(stderr, "%d ", matrix[i][j]);
-        }
-        printf("\n");
-    }
-    
-    printf("\n\n");
+    print_matrix(matrix, n);
     
     if (is_conexo_matrix(matrix, n)) printf("Eh conexo!\n");
     else printf("Nao eh conexo!\n");
 
     free(v);
     free(e);
-    for (int i = 0; i < n; i++) free(matrix[i]);
+    for (int i = 0; i < n-1; i++) free(matrix[i]);
     free(matrix);
     return 0;
 }

@@ -27,9 +27,9 @@ int vertex_index(char *v, char c) {
 // n: quantity of vertex
 // m: quantity of edges
 int** init_matrix(int n) {
-    int **matrix = (int **)calloc(n, sizeof(int *));
+    int **matrix = (int **)calloc(n-1, sizeof(int *));
     
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n-1; i++) {
         matrix[i] = (int *)calloc((i+1), sizeof(int));
     }
 
@@ -46,15 +46,17 @@ void fill_matrix(int **matrix, char *v, char *e) {
 
     
     while (edge != NULL) {
-        i = vertex_index(v, edge[1]);
-        j = vertex_index(v, edge[0]);
+        i = vertex_index(v, edge[0]);
+        j = vertex_index(v, edge[1]);
 
         edge = strtok_r(NULL, ",", &context);
-        if (i == -1 || j == -1) continue;
+        if (i == -1 || j == -1) {
+            fprintf(stderr, "Invalid edge: %s Skiping...\n", edge);
+            continue;
+        }
 
-        if (i < j) continue;
-
-        matrix[i][j] = 1;
+        if (i < j) matrix[j-1][i] = 1;
+        else matrix[i][j] = 1;
     }
     free(s);
 }
@@ -94,43 +96,49 @@ int *neighbours_of0(int **matrix, int n, char *v, char c) {
 int *neighbours_of(int **matrix, int n, int index) {
     int *neighbours = (int *)calloc(n, sizeof(int));
 
-    // check index as row
-    for (int j = 0; j <= index; j++) {
-        if (matrix[index][j]) {
-            neighbours[j] = 1;
-        }
+    for (int j = 0; j < n; j++) {
+        if (index == j) continue;
+
+        if (index < j) neighbours[j] = matrix[j-1][index];
+        else if (index == n-1) neighbours[j] = matrix[index-1][j];
+        else neighbours[j] = matrix[index][j];
     }
 
-    // check index as column
-    for (int i = index; i < n; i++) {
-        if (matrix[i][index]) {
-            neighbours[i] = 1;
-        }
-    }
     return neighbours;
+}
+
+int are_neighbours(int **matrix, int n, int a, int b) {
+    if (a == b) return 0;
+
+    if (a < b) return matrix[b-1][a];
+    else if (a == n-1) return matrix[a-1][b];
+    else return matrix[a][b];
 }
 
 int has_path(int **matrix, int n, int src, int dst, int *visited) {
     visited[src] = 1;
     
     // search in everyone that is conected with src
-    int *neighbours = neighbours_of(matrix, n, src);
-    if (neighbours[dst]){ // src and dst are neighbours 
-        free(neighbours);
-        return 1;
-    }
+    if (are_neighbours(matrix, n, src, dst)) return 1; // src and dst are neighbours 
     else {
         for (int i = 0; i < n; i++) {
             if (visited[i]) continue; // vertex already visited
-            if (neighbours[i] && has_path(matrix, n, i, dst, visited)){
-                free(neighbours);
-                return 1;
-            }
+            if (are_neighbours(matrix, n, src, i) && has_path(matrix, n, i, dst, visited)) return 1;
         }
     }
 
-    free(neighbours);
     return 0;
+}
+
+void print_matrix(int **matrix, int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j <= i; j++) {
+            fprintf(stderr, "%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    
+    printf("\n\n");
 }
 
 L* init_list(int n, int m) {
