@@ -4,10 +4,10 @@
 
 int is_conexo_matrix(int **matrix, int n) {
     int visited[n];
-    for (int i = 0; i < n; i++) visited[i] = 0;
 
     for (int src = 0; src < n; src++) {
         for (int dst = src+1; dst < n; dst++) {
+            for (int i = 0; i < n; i++) visited[i] = 0; // restart visited array
             if (!has_path(matrix, n, src, dst, visited)) return 0;
         }
     }
