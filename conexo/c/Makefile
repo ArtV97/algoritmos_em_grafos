@@ -4,7 +4,7 @@ COMPILER := gcc
 
 
 $(TARGET): util.o simple_graph.o
-	mkdir bin
+	-mkdir bin
 	$(COMPILER) $(TARGET).c -o bin/$(TARGET) util.o simple_graph.o
 
 util.o: util.c

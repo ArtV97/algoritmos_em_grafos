@@ -4,14 +4,39 @@
 
 int is_conexo_matrix(int **matrix, int n) {
     int visited[n];
+    for (int i = 0; i < n; i++) visited[i] = 0; // init empty visited array
 
-    for (int src = 0; src < n; src++) {
-        for (int dst = src+1; dst < n; dst++) {
-            for (int i = 0; i < n; i++) visited[i] = 0; // restart visited array
-            if (!has_path(matrix, n, src, dst, visited)) return 0;
+    bfs(matrix, n, 0, visited);
+    int visit_count = 0;
+    for (int i = 0; i < n; i++) {
+        if (visited[i] == 1) visit_count++;
+    }
+
+    if (visit_count != n) return 0;
+    return 1;
+}
+
+int nofcycles(int **matrix, int n) {
+    int visited[n];
+    for (int i = 0; i < n; i++) visited[i] = 0; // init empty visited array
+
+    bfs(matrix, n, 0, visited);
+    int visit_count = 0;
+    for (int i = 0; i < n; i++) {
+        if (visited[i] == 1) visit_count++;
+    }
+
+    if (visit_count == n) return 1;
+
+    int n_cycles = 1;
+    for (int i = 0; i < n; i++) {
+        if (visited[i] == 0) {
+            bfs(matrix, n, i, visited);
+            n_cycles++;
         }
     }
-    return 1;
+
+    return n_cycles;
 }
 
 
@@ -39,7 +64,7 @@ int main(int argc, char *argv[]) {
     print_matrix(matrix, n);
     
     if (is_conexo_matrix(matrix, n)) printf("Eh conexo!\n");
-    else printf("Nao eh conexo!\n");
+    else printf("Nao eh conexo! Quantidade de Ciclos Conexos = %d\n", nofcycles(matrix, n));
 
     free(v);
     free(e);

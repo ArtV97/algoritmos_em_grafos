@@ -10,6 +10,7 @@ typedef struct adjacency_list {
 
 int **generate_matrix(int n, int m, char *v, char *e);
 int has_path(int **matrix, int n, int src, int dst, int *visited);
+void bfs(int **matrix, int n, int v, int *visited);
 void print_matrix(int **matrix, int n);
 
 L* init_list(int n, int m);

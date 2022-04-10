@@ -70,29 +70,6 @@ int **generate_matrix(int n, int m, char *v, char *e) {
     return matrix;
 }
 
-int *neighbours_of0(int **matrix, int n, char *v, char c) {
-    int index = vertex_index(v, c);
-    int *neighbours = (int *)calloc(n, sizeof(int));
-    //int count = 0;
-
-
-    // check index as row
-    for (int j = 0; j <= index; j++) {
-        if (matrix[index][j]) {
-            neighbours[j] = 1;
-        }
-    }
-
-    // check index as column
-    for (int i = index; i < n-1; i++) {
-        if (matrix[i][index]) {
-            neighbours[i] = 1;
-        }
-    }
-
-    return neighbours;
-}
-
 int *neighbours_of(int **matrix, int n, int index) {
     int *neighbours = (int *)calloc(n, sizeof(int));
 
@@ -128,6 +105,15 @@ int has_path(int **matrix, int n, int src, int dst, int *visited) {
     }
 
     return 0;
+}
+
+void bfs(int **matrix, int n, int v, int *visited) {
+    if (visited[v] == 1) return;
+
+    visited[v] = 1;
+    for (int i = 0; i < n; i++) {
+        if (are_neighbours(matrix, n, v, i) && visited[i] == 0) bfs(matrix, n, i, visited);
+    }
 }
 
 void print_matrix(int **matrix, int n) {
