@@ -5,8 +5,10 @@ def pathR(grafo, v, lvl, t, depth=0):
     t[0] += 1
     lvl[v] = t[0]
 
+    if grafo[v] is None: return # don't have neighbours
+
     for w in range(len(grafo)):
-        if grafo[v] is not None and grafo[v][w] == 1:
+        if grafo[v][w] == 1:
             whitespaces = " " * 2 * depth
             
             if lvl[w] == -1:
