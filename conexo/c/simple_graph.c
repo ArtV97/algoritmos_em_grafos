@@ -107,12 +107,12 @@ int has_path(int **matrix, int n, int src, int dst, int *visited) {
     return 0;
 }
 
-void bfs(int **matrix, int n, int v, int *visited) {
+void dfs(int **matrix, int n, int v, int *visited) {
     if (visited[v] == 1) return;
 
     visited[v] = 1;
     for (int i = 0; i < n; i++) {
-        if (are_neighbours(matrix, n, v, i) && visited[i] == 0) bfs(matrix, n, i, visited);
+        if (are_neighbours(matrix, n, v, i) && visited[i] == 0) dfs(matrix, n, i, visited);
     }
 }
 

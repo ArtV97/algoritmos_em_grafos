@@ -6,7 +6,7 @@ int is_conexo_matrix(int **matrix, int n) {
     int visited[n];
     for (int i = 0; i < n; i++) visited[i] = 0; // init empty visited array
 
-    bfs(matrix, n, 0, visited);
+    dfs(matrix, n, 0, visited);
     int visit_count = 0;
     for (int i = 0; i < n; i++) {
         if (visited[i] == 1) visit_count++;
@@ -20,7 +20,7 @@ int nofcycles(int **matrix, int n) {
     int visited[n];
     for (int i = 0; i < n; i++) visited[i] = 0; // init empty visited array
 
-    bfs(matrix, n, 0, visited);
+    dfs(matrix, n, 0, visited);
     int visit_count = 0;
     for (int i = 0; i < n; i++) {
         if (visited[i] == 1) visit_count++;
@@ -31,7 +31,7 @@ int nofcycles(int **matrix, int n) {
     int n_cycles = 1;
     for (int i = 0; i < n; i++) {
         if (visited[i] == 0) {
-            bfs(matrix, n, i, visited);
+            dfs(matrix, n, i, visited);
             n_cycles++;
         }
     }

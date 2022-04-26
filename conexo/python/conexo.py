@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     grafo = Grafo(n, vertex, edges)
 
-    visited, t = grafo.bfs()
+    visited, t = grafo.dfs()
 
     n_cycles = grafo.n_of_cycles()
     if n_cycles == 1:
