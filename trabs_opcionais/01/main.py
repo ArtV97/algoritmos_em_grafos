@@ -1,4 +1,4 @@
-def bfs(graph, v, visited, t):
+def dfs(graph, v, visited, t):
     t[0] += 1
 
     visited[v] = t[0]
@@ -8,7 +8,7 @@ def bfs(graph, v, visited, t):
     for w in range(len(graph)):
         if graph[v][w] == 1:
             if visited[w] == -1:
-                bfs(graph, w, visited, t)
+                dfs(graph, w, visited, t)
                 t[0] += 1
                 visited[v] = t[0]
 
@@ -36,11 +36,11 @@ for x in range(T):
 
     t = [-1]
     visited = [-1 for k in range(V)]
-    bfs(graph, N, visited, t)
+    dfs(graph, N, visited, t)
     for w in range(V):
         if visited[w] == 0:
             if graph[w] is not None:
-                bfs(graph, v, visited, t)
+                dfs(graph, v, visited, t)
             else:
                 t[0] += 1
                 visited[w] = t[0]

@@ -1,4 +1,4 @@
-def dfs_interactive(graph, visited, t, v):
+def dfs_iteractive(graph, visited, t, v):
     stack = [v]
 
     while len(stack) > 0:
@@ -50,13 +50,13 @@ for x in range(N):
 if vertex_count != -1:
     visited = [0 for x in range(vertex_count+1)]
     t = [0]
-    dfs_interactive(graph, visited, t, 0)
+    dfs_iteractive(graph, visited, t, 0)
     n_cycles = 1
 
     if t[0] != vertex_count:
         for v in range(vertex_count+1):
             if (visited[v] == 0):
-                dfs_interactive(graph, visited, t, v)
+                dfs_iteractive(graph, visited, t, v)
                 n_cycles += 1
     
     print(vertex_count)
